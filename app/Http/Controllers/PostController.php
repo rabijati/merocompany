@@ -23,16 +23,19 @@ class PostController extends Controller
     
     public function store(Request $request){
         $request->validate([
-            'title'=> 'required',
-            'description'=>'required',
+            'title'=> ['required' ,'min:5'],
+            'description'=>['required', 'min:10'],
         ]);
-
-        $this->model->create([   
-            'title' => $request ->title,
-            'description' => $request ->description,
+        try{
+            $this->model->create([   
+                'title' => $request ->title,
+                'description' => $request ->description,
         ]);
         return redirect()->route('post.view')->with('success', 'Post added successfully');
+    }catch(\Exception $e){
+        return redirect()->back()-> withInput()->withErrors(['error' => 'There is an issue making post. Please contact admin']);
     }
+}
 
     public function edit($postid){
         $post = Post::find($postid);
@@ -47,7 +50,7 @@ class PostController extends Controller
     public function update(Request $request, $postid){
         $post = Post::find($postid);
         if(!$post){
-            return redirect()->route('post.view')->with('error', 'Post not found');
+            return redirect()->route('post.view')->with('error', 'Validation Error');
         }
         $request->validate([
             'title' => 'required',
@@ -60,5 +63,23 @@ class PostController extends Controller
         ]);
         return redirect()->route('post.view')->with('success', 'Post Edit Successfully');
     }
+
+    public function destroy($postid){
+        $deleted = Post::find($postid)->delete();
+        if ($deleted){
+            $msg = array (
+                'status' => true,
+                'message' => 'Post deleted'
+            );
+        }else{
+            $msg = array (
+                'status' => false,
+                'message' => 'Post cannot be deleted. Please contact admin'
+            );
+        }
+       
+        return json_encode($msg);
+    }
+
 
 }
