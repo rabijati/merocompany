@@ -19,7 +19,7 @@
         <table id="postTable" class="table table-striped" style="width:100%">
             <thead>
                 <th>SN</th>
-                <th>Title</th>
+                <th>Title</th>d
                 <th>Description</th>
                 <th>Action</th>
             </thead>
@@ -35,6 +35,9 @@
                     <td>
                         <a href="{{ route('post.edit',['postid' => $post->id]) }}" class="btn btn-primary mb-4">Edit</a>
                         <span class="btn btn-danger mb-4 delete-button" data-id="{{ $post->id }}">Delete</span>
+                        <a href="{{ route('post.viewpost',['postid' => $post->id]) }}" class="btn btn-danger mb-4">Add Comment</a>
+
+                        
                     </td>
 
                 </tr>

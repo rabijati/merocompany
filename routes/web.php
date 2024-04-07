@@ -1,12 +1,12 @@
 <?php
 
+use App\Http\Controllers\HomeController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\PostController;
 use Illuminate\Support\Facades\Route;
 
-Route::get('/', function () {
-    return view('welcome');
-});
+
+Route::get('/',[HomeController::Class, 'index'])->name('home');
 
 Route::get('/dashboard', function () {
     return view('dashboard');
@@ -23,7 +23,9 @@ Route::middleware('auth')->group(function () {
     Route::post('/admin/post/create', [PostController::class, 'store'])->name('post.store');
     Route::get('/admin/post/edit/{postid}', [PostController::class, 'edit'])->name('post.edit');
     Route::put('/admin/post/edit/{postid}', [PostController::class, 'update'])->name('post.update');
-    Route::get('/admin/post/delete/{postid}', [PostController::class, 'destroy'])->name('post.destroy');
+    Route::get('/admin/post/edit/{postid}', [PostController::class, 'edit'])->name('post.edit');
+    Route::get('/admin/post/viewpost/{postid}', [PostController::class, 'viewpost'])->name('post.viewpost');
+    Route::post('/admin/post/addComment', [PostController::class, 'commentStore'])->name('comment.store');
 
     
 
